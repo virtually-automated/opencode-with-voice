@@ -43,6 +43,16 @@ start_whisper.bat
 pip install -r requirements.txt
 ```
 
+### Batch Files Overview
+
+This repository includes three batch (.bat) files to help manage the Whisper container:
+
+| File | Description |
+|------|-------------|
+| `start_whisper.bat` | Starts the Whisper STT container using CPU only. Use this if you don't have an NVIDIA GPU or want to avoid GPU setup. Slower transcription but works on any system. |
+| `setup_gpu.bat` | Automated GPU setup and startup script. Checks for NVIDIA GPU, installs NVIDIA Container Toolkit in the Podman VM, configures CDI for GPU passthrough, and starts the Whisper container with GPU acceleration. This is the recommended option for users with NVIDIA GPUs. |
+| `stop_whisper.bat` | Stops and removes the running Whisper container. Uses `podman compose` to bring down the container defined in `whisper-podman.yml`. |
+
 ### 3. Run the Voice Client
 
 ```bash
@@ -53,12 +63,14 @@ python voice_client.py
 
 1. Start opencode in a terminal
 2. Run `python voice_client.py`
-3. Switch to the opencode window
+3. **Click on the opencode window** to ensure it has focus (this is important - the voice client sends keyboard input to the active window)
 4. **Hold Alt** to record
 5. Speak your command
-6. **Release** to stop and transcribe
-7. Text appears in opencode + auto-presses Enter
-8. Press **ESC** to exit the client
+6. **Release Alt** to stop recording and transcribe
+7. The transcribed text appears in opencode and Enter is automatically pressed to submit
+8. Press **ESC** to exit the voice client
+
+> **Important**: After starting the voice client with `python voice_client.py`, you must click on the opencode window to give it focus. When you release Alt after recording, the transcribed text will be typed into whichever window has focus. If you don't focus the opencode window, the text will be sent to the wrong application.
 
 ## Performance
 
@@ -92,6 +104,8 @@ python voice_client.py --chunk-interval 1.0  # Chunk interval in seconds (defaul
 | `*-multi` | Multilingual variants | Same | Multilingual |
 
 ## Stopping
+
+Run the batch file to stop the container:
 
 ```bash
 stop_whisper.bat
