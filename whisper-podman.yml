@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  whisper:
+    image: ghcr.io/speaches-ai/speaches:latest-cuda-12.6.3
+    container_name: whisper-stt
+    ports:
+      - "8000:8000"
+    volumes:
+      - hf-hub-cache:/home/ubuntu/.cache/huggingface/hub
+    restart: unless-stopped
+    devices:
+      - nvidia.com/gpu=all
+
+volumes:
+  hf-hub-cache:
